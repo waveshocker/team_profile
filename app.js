@@ -10,6 +10,10 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 ​
 const render = require("./lib/htmlRenderer");
 
+​
+// Write code to use inquirer to gather information about the development team members,
+// and to create objects for each team member (using the correct classes as blueprints!)
+
 //Inquirer code to gather information
 
 function runInquirer() {
@@ -35,10 +39,85 @@ function runInquirer() {
     return inquirer
         .prompt(promptArray);
 }
+
+function runInquirerManager() {
+    const promptArray = [{
+        type: "input",
+        message: "What is your office number?",
+        name: "office number"
+    }];
+
+    return inquirer
+        .prompt(promptArray);
+}
+
+function runInquirerEngineer() {
+    const promptArray = [{
+        type: "input",
+        message: "What is your github?",
+        name: "github"
+    }];
+
+    return inquirer
+        .prompt(promptArray);
+}
+
+function runInquirerIntern() {
+    const promptArray = [{
+        type: "input",
+        message: "What school do you attend?",
+        name: "school"
+    }];
+
+    return inquirer
+        .prompt(promptArray);
+}
+
+async function run() {
+    let employeeArray = [];
+    const maxTimes = 4;
+    for (i = 0; i < maxTimes; i++) {
+        const promise = new Promise((resolve, reject) => {
+            runInquirer()
+                .then(function({ name, id, email, title }) {
+
+                    if (title === "Manager") {
+                        runInquirerManager().then(function(officeNumber) {
+                            this.employee = new Manager(name, id, email, officeNumber);
+                            console.log(officeNumber);
+                            employeeArray.push(employee);
+                            resolve("done");
+                        });
+
+                    } else if (title === "Engineer") {
+                        runInquirerEngineer().then(function({ github }) {
+                            this.employee = new Engineer(name, id, email, github);
+                            console.log(github);
+                            employeeArray.push(employee);
+                            resolve("done");
+                        });
+                    } else if (title === "Intern") {
+                        runInquirerIntern().then(function({ school }) {
+                            this.employee = new Intern(name, id, email, school);
+                            console.log(school);
+                            employeeArray.push(employee);
+                            resolve("done");
+                        });
+                    }
+
+                }).catch(function(err) {
+                    console.log("There was an error.");
+                    console.log(err);
+                });
+        });
+
+        const result = await promise;
+        console.log(result);
+        render(result);
+    }
+
 ​
-​
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+
 ​
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
