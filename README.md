@@ -1,5 +1,7 @@
 # team_profile
 
+This project will generate a team's basic profile.
+
 ### Classes
 The project must have the these classes: `Employee`, `Manager`, `Engineer`,
 `Intern`. The tests for these classes in the `tests` directory must all pass.
