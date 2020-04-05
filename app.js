@@ -111,13 +111,22 @@ async function run() {
         const result = await promise;
         console.log(result);        
     }
+    //Transfer output into HTML format
     var html_output = render(employeeArray);
     
-    fs.writeFile(outputPath, html_output, function(err) {
-        if (err) throw err;
-        console.log("Written");
-    });
-    
+    if (fs.existsSync(OUTPUT_DIR)) {
+        fs.writeFile(outputPath, html_output, function(err) {
+            if (err) throw err;
+            console.log("Written");
+        });
+    }
+    else {
+        fs.mkdirSync(OUTPUT_DIR);
+        fs.writeFile(outputPath, html_output, function(err) {
+            if (err) throw err;
+            console.log("Written");
+        });
+    }
 
     // console.log(employeeArray.length);
     
